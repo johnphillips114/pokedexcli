@@ -27,8 +27,10 @@ func getCommands() (map[string]cliCommand) {
 	}
 }
 
+
 func commandHelp() (error) {
 	fmt.Println("commandHelp")
+
 	return nil
 }
 
@@ -38,12 +40,18 @@ func commandExit() (error){
 }
 
 func main() {
-	//commands := getCommands()
+	commands := getCommands()
 	for {
 		// get input
 		scanner := bufio.NewScanner(os.Stdin)
 		for scanner.Scan() {
 			fmt.Println("In scan")
+			for k := range commands {
+				if scanner.Text() == k {
+					fmt.Println(commands[k].callback())
+				}
+			}
+
 		}
 		if err := scanner.Err(); err != nil {
 			fmt.Println("reading standard input:", err)
