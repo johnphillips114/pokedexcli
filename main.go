@@ -14,15 +14,25 @@ type cliCommand struct {
 
 func getCommands() (map[string]cliCommand) {
 	return map[string]cliCommand {
+		"exit": {
+			name:			"exit",
+			description:	"Exit the pokedex",
+			callback:		commandExit,
+		},
 		"help": {
 			name:			"help",
 			description:	"Displays a help message",
 			callback:		commandHelp,
 		},
-		"exit": {
-			name:			"exit",
-			description:	"Exit the pokedex",
-			callback:		commandExit,
+		"map": {
+			name: 			"map",
+			description:	"Displays the next 20 map locations",
+			callback:		commandMap,
+		},
+		"mapb": {
+			name:			"mapb",
+			description:	"Displays the previous 20 map locations",
+			callback:		commandMapb,
 		},
 	}
 }
@@ -38,14 +48,19 @@ func commandHelp() (error) {
 		fmt.Print(": ")
 		fmt.Println(commands[k].description)
 	}
-
 	return nil
 }
 
 func commandExit() (error){			
-	fmt.Println("")
-
 	os.Exit(0)
+	return nil
+}
+
+func commandMap() (error) {
+	return nil
+}
+
+func commandMapb() (error) {
 	return nil
 }
 
@@ -53,7 +68,6 @@ func main() {
 	commands := getCommands()
 	for {
 		fmt.Print("pokedex > ")
-		// get input
 		scanner := bufio.NewScanner(os.Stdin)
 		for scanner.Scan() {
 			fmt.Print("\npokedex > ")
