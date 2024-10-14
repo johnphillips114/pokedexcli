@@ -36,6 +36,7 @@ func commandHelp() (error) {
 
 func commandExit() (error){
 	fmt.Println("commandExit")
+	os.Exit(0)
 	return nil
 }
 
