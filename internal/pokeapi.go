@@ -1,97 +1,112 @@
-package pokeapi 
+package pokeapi
 
 import (
-	
+	"encoding/json"
+	"io"
+	"net/http"
 )
 
-type Areas struct {
-	Name string `json:"name"`
-	URL string `json:"url"`
-}
-
-type Generation struct {
-	Name string `json:"name"`
-	URL string `json:"url"`
-}
-
-type GameIndices struct {
-	Generation Generation `json:"generation"`
-	GameIndex uint `json:"game_index"`
-}
-
-type Language struct {
-	Name string `json:"name"`
-	URL string `json:"url"`
-}
-
-type Names struct {
-	Name string `json:"name"`
-	Language Language `json:"language"`
-}
-
-type Region struct {
-	Name string `json:"name"`
-	URL string `json:"url"`
-}
-
 type Location struct {
-	Names []Names `json:"names"`
-	Areas []Areas `json:"areas"`
-	Region Region `json:"region"`
-	Generation Generation `json:"generation"`
+	Names []struct {
+		Name     string `json:"name"`
+		Language struct {
+			Name string `json:"name"`
+			URL  string `json:"url"`
+		} `json:"language"`
+	} `json:"names"`
+	Areas []struct {
+		Name string `json:"name"`
+		URL  string `json:"url"`
+	} `json:"areas"`
+	Region struct {
+		Name string `json:"name"`
+		URL  string `json:"url"`
+	} `json:"region"`
+	GameIndicies []struct {
+		Generation struct {
+			Name string `json:"name"`
+			URL  string `json:"url"`
+		} `json:"generation"`
+		GameIndex uint `json:"game_index"`
+	} `json:"game_indices"`
 	Name string `json:"name"`
-	ID uint `json:"id"`
-}
-
-type EncounterMethod struct {
-	Name string `json:"name"`
-	URL string `json:"url"`
-}
-
-type Version struct {
-	Name string `json:"name"`
-	URL string `json:"url"`
-}
-
-type VersionDetails struct {
-	Rate uint `json:"rate"`
-	MaxChance uint `json:"max_chance"`
-	Version Version `json:"version"`
-}
-
-type ConditionValues struct {
-
-}
-
-type Method struct {
-	Name string `json:"name"`
-	URL string `json:"url"`
-}
-
-type EncounterDetails struct {
-	MinLevel uint `json:"min_level"`
-	MaxLevel uint `json:"max_level"`
-	ConditionValues []ConditionValues `json:"condition_values"`
-	Chance uint `json:"chance"`
-	Method Method `json:"method"`
-}
-
-type EncounterMethodRates struct {
-	EncounterMethod []EncounterMethod `json:"encounter_method"`
-	VersionDetails []VersionDetails `json:"version_details"`
-}
-
-type PokemonEncounters struct {
-	Pokemon []Pokemon `json:"pokemon"`
-	VersionDetails []VersionDetails `json:"version_details"`
+	ID   uint   `json:"id"`
 }
 
 type LocationAreas struct {
-	ID uint `json:"id"`
-	Name string `json:"name"`
-	GameIndex uint `json:"game_index"`
-	EncounterMethodRates []EncounterMethodRates `json:"encounter_method_rates"`
-	Location []Location `json:"location"`
-	Names []Names `json:"names"`
-	PokemonEncounters []PokemonEncounters `json:"pokemon_encounters"`
+	ID                   int    `json:"id"`
+	Name                 string `json:"name"`
+	GameIndex            int    `json:"game_index"`
+	EncounterMethodRates []struct {
+		EncounterMethod struct {
+			Name string `json:"name"`
+			URL  string `json:"url"`
+		} `json:"encounter_method"`
+		VersionDetails []struct {
+			Rate    int `json:"rate"`
+			Version struct {
+				Name string `json:"name"`
+				URL  string `json:"url"`
+			} `json:"version"`
+		} `json:"version_details"`
+	} `json:"encounter_method_rates"`
+	Location struct {
+		Name string `json:"name"`
+		URL  string `json:"url"`
+	} `json:"location"`
+	Names []struct {
+		Name     string `json:"name"`
+		Language struct {
+			Name string `json:"name"`
+			URL  string `json:"url"`
+		} `json:"language"`
+	} `json:"names"`
+	PokemonEncounters []struct {
+		Pokemon struct {
+			Name string `json:"name"`
+			URL  string `json:"url"`
+		} `json:"pokemon"`
+		VersionDetails []struct {
+			Version struct {
+				Name string `json:"name"`
+				URL  string `json:"url"`
+			} `json:"version"`
+			MaxChance        int `json:"max_chance"`
+			EncounterDetails []struct {
+				MinLevel        int   `json:"min_level"`
+				MaxLevel        int   `json:"max_level"`
+				ConditionValues []any `json:"condition_values"`
+				Chance          int   `json:"chance"`
+				Method          struct {
+					Name string `json:"name"`
+					URL  string `json:"url"`
+				} `json:"method"`
+			} `json:"encounter_details"`
+		} `json:"version_details"`
+	} `json:"pokemon_encounters"`
+}
+
+func GetLocations(ID int) ([]LocationAreas, error) {
+	locationAreas := make([]LocationAreas, 20)
+	for i := 0; i < 20; i++ {
+		endpoint := "https://pokeapi.co/api/v2/location-area/" + string(ID+i)
+		res, err := http.Get(endpoint)
+		if err != nil {
+			return nil, err
+		}
+		defer res.Body.Close()
+		body, err := io.ReadAll(res.Body)
+		if err != nil {
+			return nil, err
+		}
+
+		var location LocationAreas
+		err = json.Unmarshal(body, &location)
+		if err != nil {
+			return nil, err
+		}
+		locationAreas[i] = location
+	}
+
+	return locationAreas, nil
 }
