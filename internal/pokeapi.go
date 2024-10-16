@@ -192,6 +192,22 @@ type ContestEffects struct {
 	Jam    uint `json:"jam"`
 }
 
+type SuperContestEffects struct {
+	FlavorTextEntries []struct {
+		FlavorText string `json:"flavor_text"`
+		Language   struct {
+			Name string `json:"name"`
+			URL  string `json:"url"`
+		} `json:"language"`
+	} `json:"flavor_text_entries"`
+	Moves []struct {
+		Name string `json:"name"`
+		URL  string `json:"url"`
+	} `json:"moves"`
+	ID     uint `json:"id"`
+	Appeal uint `json:"appeal"`
+}
+
 func GetLocations(ID int) ([]LocationAreas, error) {
 	locationAreas := make([]LocationAreas, 20)
 	endpoint := "https://pokeapi.co/api/v2/location-area/" + string(ID)
