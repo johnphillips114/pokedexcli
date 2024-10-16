@@ -208,6 +208,19 @@ type SuperContestEffects struct {
 	Appeal uint `json:"appeal"`
 }
 
+type EncounterMethods struct {
+	Names []struct {
+		Name     string `json:"name"`
+		Language struct {
+			Name string `json:"name"`
+			URL  string `json:"url"`
+		} `json:"language"`
+	} `json:"names"`
+	Name  string `json:"name"`
+	ID    uint   `json:"id"`
+	Order uint   `json:"order"`
+}
+
 func GetLocations(ID int) ([]LocationAreas, error) {
 	locationAreas := make([]LocationAreas, 20)
 	endpoint := "https://pokeapi.co/api/v2/location-area/" + string(ID)
