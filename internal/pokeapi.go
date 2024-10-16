@@ -33,7 +33,7 @@ type Location struct {
 	ID   uint   `json:"id"`
 }
 
-type LocationAreas struct {
+type LocationArea struct {
 	ID                int    `json:"id"`
 	Name              string `json:"name"`
 	GameIndex         int    `json:"game_index"`
@@ -86,7 +86,7 @@ type LocationAreas struct {
 	} `json:"location"`
 }
 
-type Berries struct {
+type Berry struct {
 	Flavors []struct {
 		Potency uint `json:"potency"`
 		Flavor  struct {
@@ -116,7 +116,7 @@ type Berries struct {
 	SoilDryness      uint   `json:"soil_dryness"`
 }
 
-type BerryFirmnesses struct {
+type BerryFirmness struct {
 	Names []struct {
 		Name     string `json:"name"`
 		Language struct {
@@ -132,7 +132,7 @@ type BerryFirmnesses struct {
 	Name string `json:"name"`
 }
 
-type BerryFlavors struct {
+type BerryFlavor struct {
 	Berries []struct {
 		Berry struct {
 			Name string `json:"name"`
@@ -155,7 +155,7 @@ type BerryFlavors struct {
 	ID   uint   `json:"id"`
 }
 
-type ContestTypes struct {
+type ContestType struct {
 	Names []struct {
 		Name     string `json:"name"`
 		Color    string `json:"color"`
@@ -172,7 +172,7 @@ type ContestTypes struct {
 	ID   uint   `json:"id"`
 }
 
-type ContestEffects struct {
+type ContestEffect struct {
 	FlavorTextEntries []struct {
 		FlavorText string `json:"flavor_text"`
 		Language   struct {
@@ -192,7 +192,7 @@ type ContestEffects struct {
 	Jam    uint `json:"jam"`
 }
 
-type SuperContestEffects struct {
+type SuperContestEffect struct {
 	FlavorTextEntries []struct {
 		FlavorText string `json:"flavor_text"`
 		Language   struct {
@@ -208,7 +208,7 @@ type SuperContestEffects struct {
 	Appeal uint `json:"appeal"`
 }
 
-type EncounterMethods struct {
+type EncounterMethod struct {
 	Names []struct {
 		Name     string `json:"name"`
 		Language struct {
@@ -221,8 +221,8 @@ type EncounterMethods struct {
 	Order uint   `json:"order"`
 }
 
-func GetLocations(ID int) ([]LocationAreas, error) {
-	locationAreas := make([]LocationAreas, 20)
+func GetLocations(ID int) ([]LocationArea, error) {
+	locationAreas := make([]LocationArea, 20)
 	endpoint := "https://pokeapi.co/api/v2/location-area/" + string(ID)
 	res, err := http.Get(endpoint)
 	if err != nil {
@@ -238,7 +238,7 @@ func GetLocations(ID int) ([]LocationAreas, error) {
 		return nil, err
 	}
 	//for i := 0; i < 20; i++ {
-	//	var location LocationAreas
+	//	var location LocationArea
 	//	locationAreas[i] = location
 	//}
 
