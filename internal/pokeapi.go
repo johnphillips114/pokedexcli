@@ -237,6 +237,22 @@ type EncounterCondition struct {
 	ID   uint   `json:"id"`
 }
 
+type EncounterConditionValue struct {
+	Names []struct {
+		Name     string `json:"name"`
+		Language struct {
+			Name string `json:"name"`
+			URL  string `json:"url"`
+		} `json:"langugage"`
+	} `json:"names"`
+	Condition struct {
+		Name string `json:"name"`
+		URL  string `json:"url"`
+	} `json:"condition"`
+	Name string `json:"name"`
+	ID   uint   `json:"id"`
+}
+
 func GetLocations(ID int) ([]LocationArea, error) {
 	locationAreas := make([]LocationArea, 20)
 	endpoint := "https://pokeapi.co/api/v2/location-area/" + string(ID)
