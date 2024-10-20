@@ -104,9 +104,9 @@ type Berry struct {
 	} `json:"item"`
 	NaturalGiftType struct {
 		Name string `json:"name"`
-		url  string `json:"URL"`
+		URL  string `json:"URL"`
 	} `json:"natural_gift_type"`
-	Name             string `json:"name:`
+	Name             string `json:"name"`
 	ID               uint   `json:"id"`
 	GrowthTime       uint   `json:"growth_time"`
 	MaxHarvest       uint   `json:"max_harvest"`
@@ -251,6 +251,16 @@ type EncounterConditionValue struct {
 	} `json:"condition"`
 	Name string `json:"name"`
 	ID   uint   `json:"id"`
+}
+
+type EvolutionChain struct {
+	ID              uint `json:"id"`
+	BabyTriggerItem Item `json:"baby_trigger_item"`
+	Chain           struct {
+		IsBaby  bool `json:"is_baby"`
+		Species struct {
+		}
+	}
 }
 
 func GetLocations(ID int) ([]LocationArea, error) {
